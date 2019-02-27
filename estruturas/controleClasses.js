@@ -4,10 +4,8 @@ class ControleClasses {
 	}
 
 	crie(Modelo, atributos) {
-		let temp = new HUE().classe(Modelo, atributos);
-		let classes = this.mostre('classes');
-		classes.push(temp);
-		this.mude(classes, 'classes');
+		let temp = $.classe(Modelo, atributos);
+		this.mude(this.adicione(temp, 'classes'), 'classes');
 		return temp;
 	}
 }
