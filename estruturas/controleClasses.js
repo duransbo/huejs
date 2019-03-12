@@ -1,5 +1,6 @@
-class ControleClasses {
+class ControleClasses extends HUEX {
 	constructor() {
+		super();
 		this.inicia({'classes': []});
 	}
 

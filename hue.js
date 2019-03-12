@@ -32,10 +32,20 @@ const $ = (function() {
 					}
 				}
 
-				//1ª ORDEM
 				mostre(atributo = null) {
-					let clone = new Objeto(privados).clone();
-					return atributo === null ? clone : clone[atributo];a;
+					const clone = (objeto, retorno = {}, i = 0) => {
+						let valor = objeto[Object.keys(objeto)[i]];
+
+						return i == Object.keys(objeto).length ? 
+							retorno : clone(objeto, {
+								...retorno,
+								[Object.keys(objeto)[i]] : valor === null || (typeof valor == 'object' && !Array.isArray(valor)) ?
+									clone(valor) : valor
+							}, i+1);
+					}
+
+					let clonado = clone(privados);
+					return atributo === null ? clonado : clonado[atributo];
 				}
 				mude(valor = {}, atributo = false) {
 					if (atributo) {
@@ -43,6 +53,7 @@ const $ = (function() {
 					} else {
 						Object.assign(privados, valor);
 					}
+					return this;
 				}
 				inicia(modelo) {
 					if (ehIniciado) {
@@ -52,24 +63,6 @@ const $ = (function() {
 						this.mude(atributos);
 						ehIniciado = true;
 					}
-				}
-
-				//2ª Ordem
-				adicione(valor, atributo) {
-					let valores = this.mostre(atributo);
-					valores.push(valor);
-					return valores;
-				}
-				retire(atributo, posicao) {
-					let valores = this.mostre(atributo);
-					valores.pop();
-					return valores;
-				}
-				incremente(atributo) {
-					return this.mostre(atributo) + 1;
-				}
-				decremente(atributo) {
-					return this.mostre(atributo) - 1;
 				}
 			};
 			return new Classe;

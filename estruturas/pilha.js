@@ -1,5 +1,6 @@
-class Pilha {
+class Pilha extends HUEX {
 	constructor() {
+		super();
 		this.inicia({
 			'topo': 0,
 			'valores': []
@@ -15,6 +16,7 @@ class Pilha {
 			'topo': this.incremente('topo'),
 			'valores': this.adicione(valor, 'valores')
 		});
+		return this;
 	}
 
 	desempilhe() {
@@ -22,5 +24,10 @@ class Pilha {
 			'topo': this.decremente('topo'),
 			'valores': this.retire('valores', this.mostre('topo') - 1)
 		});
+		return this;
+	}
+
+	teste() {
+		console.log(privados);
 	}
 }
