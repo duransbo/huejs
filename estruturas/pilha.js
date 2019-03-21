@@ -1,19 +1,17 @@
-class Pilha extends HUEX {
+class Pilha extends Lista {
 	constructor() {
 		super();
 		this.inicia({
-			'topo': 0,
 			'valores': []
 		});
 	}
 
 	topo() {
-		return this.mostre('valores')[this.mostre('topo') - 1];
+		return this.mostre('valores')[this.ultimo('valores')];
 	}
 
 	empilhe(valor) {
 		this.mude({
-			'topo': this.incremente('topo'),
 			'valores': this.adicione(valor, 'valores')
 		});
 		return this;
@@ -21,13 +19,8 @@ class Pilha extends HUEX {
 
 	desempilhe() {
 		this.mude({
-			'topo': this.decremente('topo'),
-			'valores': this.retire('valores', this.mostre('topo') - 1)
+			'valores': this.retire('valores', this.ultimo('valores'))
 		});
 		return this;
-	}
-
-	teste() {
-		console.log(privados);
 	}
 }

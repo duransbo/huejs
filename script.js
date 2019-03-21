@@ -1,61 +1,51 @@
 $.importe([
 	'huex',
-	'estruturas/pilha'
+	'estruturas/controleClasses',
+	'estruturas/pilha',
+	'estruturas/fila'
 ], () => {
-	let objeto = $.classe(Pilha, {'valores': []});
+	let controle = $.crie(ControleClasses);
+	console.log(controle);
+	console.log(controle.mostre());
+	
+	let objeto = controle.crie(Pilha);
 
 	console.log(objeto);
-	console.log(objeto.empilhe(5).mostre('valores'));
-	console.log(objeto.empilhe(7).mostre('valores'));
-	console.log(objeto.desempilhe().mostre('valores'));
-	objeto.teste();
-});
+	objeto.empilhe(5);
+	objeto.empilhe(7);
+	objeto.empilhe(9);
+	objeto.empilhe(11);
+	objeto.desempilhe();
+	console.log(objeto.topo());
+	
+	let objeto2 = controle.crie(Fila);
 
-// Classe para criar herança multipla
-class multi {
-    // metodo Inherit, para criar classes base/mãe
-    static inherit(..._bases) {
-        class classes {
-            constructor(..._args) {
-                var index = 0;
-                for (let b of _bases) {
-                    let obj = new b(_args[index++]);
-                    multi.copy(this, obj);
-                }
-            }
-        }
-        // Copia as propriedades e metodos
-        for (let base of _bases) {
-            multi.copy(classes, base);
-            multi.copy(classes.prototype, base.prototype);
-        }
-        return classes;
-    }
-    // Copia as propriedades de uma classe para outra
-    static copy(_target, _source) {
-        for (let key of Reflect.ownKeys(_source)) {
-            if (key !== "constructor" && key !== "prototype" && key !== "name") {
-                let desc = Object.getOwnPropertyDescriptor(_source, key);
-                Object.defineProperty(_target, key, desc);
-            }
-        }
-    }
-}
-class idades {
-    constructor(_idade) { this.idade = _idade; }
-    increase() { this.idade++; }
-}
-class sexos {
-    constructor(_sexo) { this.sexo = _sexo; }
-    male() { this._sexo = 'M'; }
-    female() { this._sexo = 'F'; }
-}
-class pessoa extends multi.inherit(idades, sexos)
-{
-    constructor(...args) {
-        super(18, 'M');
-        this.nome = args[0];
-    }
-}
-var p = new pessoa('Pericles');
-console.log(p);
+	console.log(objeto2);
+	objeto2.enfileire(10);
+	objeto2.enfileire(9);
+	objeto2.enfileire(8);
+	objeto2.enfileire(7);
+	objeto2.desenfileire();
+	console.log(objeto2.proximo());
+	
+	let objeto3 = controle.crie(Pilha);
+
+	console.log(objeto3);
+	objeto3.empilhe(1);
+	objeto3.empilhe(2);
+	objeto3.empilhe(3);
+	objeto3.empilhe(4);
+	objeto3.desempilhe();
+	console.log(objeto3.topo());
+	
+	console.log(controle.mostre());
+	console.log(objeto.mostre('valores'));
+	console.log(objeto2.mostre('valores'));
+	console.log(objeto3.mostre('valores'));
+	objeto.empilhe(15);
+	console.log(objeto.mostre('valores'));
+	
+	objeto.teste = 'oi';
+	console.log(objeto);
+	
+});

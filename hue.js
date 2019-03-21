@@ -1,4 +1,12 @@
 const $ = (function() {
+	const funda = function(destino, origem) {
+		for (let key of Reflect.ownKeys(origem)) {
+			if (key !== "constructor" && key !== "prototype" && key !== "name") {
+				Object.defineProperty(destino, key, Object.getOwnPropertyDescriptor(origem, key));
+			}
+		}
+	}
+	
 	class HUE {
 		importe(url = false, executar = function(){}) {
 			if (Array.isArray(url)) {
@@ -21,17 +29,33 @@ const $ = (function() {
 			}
 		};
 		
-		classe(Modelo, atributos = {}) {
-			let ehIniciado = false;
-			let privados;
-			class Classe extends Modelo {
-				constructor() {
-					super();
-					if (!ehIniciado) {
-						console.error(`objeto [${this.constructor.__proto__.name}] ainda não foi iniciado`);
+		mescle(destino, origem) {
+			funda(destino, origem);
+			funda(destino.prototype, origem.prototype);		
+		}
+		
+		herde(...modelos) {			
+			class Heranca {
+				constructor(...atributos) {
+					var i = 0;
+					for (let modelo of modelos) {
+						funda(this, new modelo(atributos[i++]));
 					}
 				}
-
+			}
+			
+			for (let modelo of modelos) {
+				this.mescle(Heranca, modelo);
+			}
+			
+			return Heranca;
+		}
+		
+		crie(Modelo, atributos = {}) {
+			let ehIniciado = false;
+			let privados;
+			
+			class Classe extends Modelo {
 				mostre(atributo = null) {
 					const clone = (objeto, retorno = {}, i = 0) => {
 						let valor = objeto[Object.keys(objeto)[i]];
@@ -57,7 +81,7 @@ const $ = (function() {
 				}
 				inicia(modelo) {
 					if (ehIniciado) {
-						console.error(`objeto [${this.constructor.__proto__.name}] já iniciado`);
+						console.error(`objeto [${this.constructor.name}] já iniciado`);
 					} else {
 						privados = Object.seal(modelo);
 						this.mude(atributos);
@@ -65,6 +89,7 @@ const $ = (function() {
 					}
 				}
 			};
+						
 			return new Classe;
 		};
 	}
